@@ -26,7 +26,7 @@
     <v-content>
       <v-container fluid fill-height>
         <v-layout justify-center align-center>
-          <router-view></router-view>
+          <router-view @show-error="showError"></router-view>
         </v-layout>
       </v-container>
     </v-content>
@@ -34,6 +34,13 @@
       <v-spacer></v-spacer>
       <div>© {{ new Date().getFullYear() }}</div>
     </v-footer>
+    <v-snackbar error multi-line
+                :timeout="6000"
+                v-model="error_snackbar"
+    >
+      <p v-for="(error, index) in errors">{{ error }} </p>
+      <v-btn dark flat @click.native="error_snackbar = false">Close</v-btn>
+    </v-snackbar>
   </v-app>
 </template>
 
@@ -48,12 +55,18 @@
           { title: 'Sign up', icon: 'add', path: '/sign-up' }
         ],
         userMenuItems: [],
-        loggedIn: false
+        loggedIn: false,
+        errors: [],
+        error_snackbar: false,
       }
     },
     methods: {
       goTo (path) {
         this.$router.push(path)
+      },
+      showError (errors) {
+        this.errors = errors
+        this.error_snackbar = true
       }
     },
     computed: {

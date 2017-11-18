@@ -4,11 +4,13 @@ import Vue from 'vue'
 
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.css'
+import VueResource from 'vue-resource'
 
 import App from './App'
 import router from './router'
 
 Vue.use(Vuetify)
+Vue.use(VueResource)
 
 Vue.config.productionTip = false
 

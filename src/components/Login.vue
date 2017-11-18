@@ -51,6 +51,17 @@
     methods: {
       submit () {
         this.$v.$touch()
+        if (!this.$v.$invalid) {
+          var formData = new FormData();
+          formData.append('email', this.email);
+          formData.append('password', this.password);
+
+          this.$http.post('/users/by_email_password', formData).then(response => {
+            console.log(response)
+          }, response => {
+            this.$emit('show-error', ['Invalid Email or Password'])
+          });
+        }
       },
       clear () {
         this.$v.$reset()
