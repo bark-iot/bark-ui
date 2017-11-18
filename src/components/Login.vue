@@ -16,14 +16,6 @@
       @blur="$v.password.$touch()"
       required
     ></v-text-field>
-    <v-checkbox
-      label="Agree with Terms?"
-      v-model="checkbox"
-      :error-messages="checkboxErrors"
-      @change="$v.checkbox.$touch()"
-      @blur="$v.checkbox.$touch()"
-      required
-    ></v-checkbox>
 
     <v-btn @click="submit">Login</v-btn>
     <v-btn @click="clear">clear</v-btn>
@@ -38,14 +30,12 @@
     mixins: [validationMixin],
     validations: {
       password: { required, minLength: minLength(8) },
-      email: { required, email },
-      checkbox: { required }
+      email: { required, email }
     },
     data () {
       return {
         password: '',
-        email: '',
-        checkbox: false
+        email: ''
       }
     },
     methods: {
@@ -67,16 +57,9 @@
         this.$v.$reset()
         this.password = ''
         this.email = ''
-        this.checkbox = false
       }
     },
     computed: {
-      checkboxErrors () {
-        const errors = []
-        if (!this.$v.checkbox.$dirty) return errors
-        !this.$v.checkbox.required && errors.push('You must agree to continue!')
-        return errors
-      },
       passwordErrors () {
         const errors = []
         if (!this.$v.password.$dirty) return errors

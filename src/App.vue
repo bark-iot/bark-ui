@@ -26,7 +26,10 @@
     <v-content>
       <v-container fluid fill-height>
         <v-layout justify-center align-center>
-          <router-view @show-error="showError"></router-view>
+          <router-view
+            @show-error="showError"
+            @show-success-message="showSuccessMessage"
+          ></router-view>
         </v-layout>
       </v-container>
     </v-content>
@@ -34,12 +37,19 @@
       <v-spacer></v-spacer>
       <div>© {{ new Date().getFullYear() }}</div>
     </v-footer>
-    <v-snackbar error multi-line
+    <v-snackbar error top multi-line
                 :timeout="6000"
-                v-model="error_snackbar"
+                v-model="errorSnackbar"
     >
       <p v-for="(error, index) in errors">{{ error }} </p>
-      <v-btn dark flat @click.native="error_snackbar = false">Close</v-btn>
+      <v-btn dark flat @click.native="errorSnackbar = false">Close</v-btn>
+    </v-snackbar>
+    <v-snackbar success top multi-line
+                :timeout="6000"
+                v-model="successSnackbar"
+    >
+      <p>{{ successMessage }} </p>
+      <v-btn dark flat @click.native="successSnackbar = false">Close</v-btn>
     </v-snackbar>
   </v-app>
 </template>
@@ -57,7 +67,9 @@
         userMenuItems: [],
         loggedIn: false,
         errors: [],
-        error_snackbar: false,
+        successMessage: '',
+        errorSnackbar: false,
+        successSnackbar: false,
       }
     },
     methods: {
@@ -66,7 +78,11 @@
       },
       showError (errors) {
         this.errors = errors
-        this.error_snackbar = true
+        this.errorSnackbar = true
+      },
+      showSuccessMessage (msg) {
+        this.successMessage = msg
+        this.successSnackbar = true
       }
     },
     computed: {
