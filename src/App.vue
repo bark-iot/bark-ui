@@ -29,6 +29,7 @@
           <router-view
             @show-error="showError"
             @show-success-message="showSuccessMessage"
+            @login="handleLogin"
           ></router-view>
         </v-layout>
       </v-container>
@@ -64,12 +65,16 @@
           { title: 'Login', icon: 'arrow_forward', path: '/login' },
           { title: 'Sign up', icon: 'add', path: '/sign-up' }
         ],
-        userMenuItems: [],
+        userMenuItems: [
+          { title: 'Profile', icon: 'info_outline', path: '/profile' },
+          { title: 'Houses', icon: 'info_outline', path: '/houses' }
+        ],
         loggedIn: false,
         errors: [],
         successMessage: '',
         errorSnackbar: false,
         successSnackbar: false,
+        loggedInUser: null
       }
     },
     methods: {
@@ -83,6 +88,11 @@
       showSuccessMessage (msg) {
         this.successMessage = msg
         this.successSnackbar = true
+      },
+      handleLogin (user) {
+        this.loggedIn = true
+        this.loggedInUser = user
+        this.showSuccessMessage('You are logged in!')
       }
     },
     computed: {
