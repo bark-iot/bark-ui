@@ -22,6 +22,10 @@
     <v-toolbar app fixed clipped-left>
       <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title>Bark IoT</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-toolbar-items class="hidden-sm-and-down">
+        <v-btn flat v-if="loggedIn" @click="handleLogout">Logout</v-btn>
+      </v-toolbar-items>
     </v-toolbar>
     <v-content>
       <v-container fluid fill-height>
@@ -77,6 +81,15 @@
         loggedInUser: null
       }
     },
+    localStorage: {
+      userToken: ''
+    },
+    mounted () {
+      var userToken = this.$localStorage.get('userToken')
+      if (userToken != 'undefined' && userToken != '') {
+        this.handleLogin(userToken)
+      }
+    },
     methods: {
       goTo (path) {
         this.$router.push(path)
@@ -89,10 +102,23 @@
         this.successMessage = msg
         this.successSnackbar = true
       },
-      handleLogin (user) {
-        this.loggedIn = true
-        this.loggedInUser = user
-        this.showSuccessMessage('You are logged in!')
+      handleLogin (token) {
+        this.$http.get('/users/by_token', {headers: {'Authorization': 'Bearer ' + token}}).then(response => {
+          this.loggedIn = true
+          this.loggedInUser = response.body
+          this.$localStorage.set('userToken', token)
+          this.showSuccessMessage('You are logged in!')
+          this.$router.push('/profile')
+        }, response => {
+          this.showError(['Please re-login!'])
+        });
+      },
+      handleLogout () {
+        this.loggedIn = false
+        this.loggedInUser = null
+        this.$localStorage.remove('userToken')
+        this.showSuccessMessage('You are logged out!')
+        this.$router.push('/')
       }
     },
     computed: {

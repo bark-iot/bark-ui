@@ -47,7 +47,7 @@
           formData.append('password', this.password);
 
           this.$http.post('/users/by_email_password', formData).then(response => {
-            this.$emit('login', response.body)
+            this.$emit('login', response.body.token)
           }, response => {
             this.$emit('show-error', ['Invalid Email or Password'])
           });
