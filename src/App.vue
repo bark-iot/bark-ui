@@ -50,7 +50,7 @@
       <v-btn dark flat @click.native="errorSnackbar = false">Close</v-btn>
     </v-snackbar>
     <v-snackbar success top multi-line
-                :timeout="6000"
+                :timeout="3000"
                 v-model="successSnackbar"
     >
       <p>{{ successMessage }} </p>

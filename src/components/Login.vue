@@ -11,6 +11,7 @@
     <v-text-field
       label="Password"
       v-model="password"
+      type="password"
       :error-messages="passwordErrors"
       @input="$v.password.$touch()"
       @blur="$v.password.$touch()"
