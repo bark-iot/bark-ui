@@ -28,8 +28,7 @@
       </v-toolbar-items>
     </v-toolbar>
     <v-content>
-      <v-container fluid fill-height>
-        <v-layout justify-center align-center>
+
           <router-view
             @show-error="showError"
             @show-success-message="showSuccessMessage"

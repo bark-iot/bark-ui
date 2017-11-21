@@ -1,8 +1,12 @@
 <template>
-  <div class="text-xs-center">
-    <h1>{{ msg }}</h1>
-    <v-btn color="primary" dark @click="goTo('/login')">Get Started</v-btn>
-  </div>
+  <v-container fluid fill-height>
+    <v-layout justify-center align-center>
+      <div class="text-xs-center">
+        <h1>{{ msg }}</h1>
+        <v-btn color="primary" dark @click="goTo('/login')">Get Started</v-btn>
+      </div>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>

@@ -1,27 +1,31 @@
 <template>
-  <form>
-    <v-text-field
-      label="Username"
-      v-model="username"
-    ></v-text-field>
-    <v-text-field
-      label="E-mail (readonly)"
-      v-model="email"
-      readonly
-    ></v-text-field>
-    <v-text-field
-      label="Password"
-      v-model="password"
-      type="password"
-      :error-messages="passwordErrors"
-      @input="$v.password.$touch()"
-      @blur="$v.password.$touch()"
-      required
-    ></v-text-field>
+  <v-container fluid fill-height>
+    <v-layout justify-center align-center>
+      <form>
+        <v-text-field
+          label="Username"
+          v-model="username"
+        ></v-text-field>
+        <v-text-field
+          label="E-mail (readonly)"
+          v-model="email"
+          readonly
+        ></v-text-field>
+        <v-text-field
+          label="Password"
+          v-model="password"
+          type="password"
+          :error-messages="passwordErrors"
+          @input="$v.password.$touch()"
+          @blur="$v.password.$touch()"
+          required
+        ></v-text-field>
 
-    <v-btn @click="submit">Update profile</v-btn>
-    <v-btn @click="clear">clear</v-btn>
-  </form>
+        <v-btn @click="submit">Update profile</v-btn>
+        <v-btn @click="clear">clear</v-btn>
+      </form>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
