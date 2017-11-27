@@ -20,7 +20,7 @@
           required
         ></v-text-field>
 
-        <v-btn @click="submit">Login</v-btn>
+        <v-btn @click="submit" color="orange">Login</v-btn>
         <v-btn @click="clear">clear</v-btn>
       </form>
     </v-layout>

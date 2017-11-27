@@ -32,7 +32,7 @@
           required
         ></v-checkbox>
 
-        <v-btn @click="submit">Sign Up</v-btn>
+        <v-btn @click="submit" color="orange">Sign Up</v-btn>
         <v-btn @click="clear">clear</v-btn>
       </form>
     </v-layout>

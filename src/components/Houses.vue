@@ -30,7 +30,7 @@
             <v-card-text v-show="house.showSettings" class="grey darken-1">
               <h3>Key</h3>
               {{ house.key }}
-              <v-btn color="primary">Dashboard</v-btn>
+              <v-btn color="primary" @click="goTo('/houses/' + house.id)">Dashboard</v-btn>
             </v-card-text>
           </v-slide-y-transition>
         </v-card>

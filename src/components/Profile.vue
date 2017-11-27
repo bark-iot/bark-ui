@@ -21,7 +21,7 @@
           required
         ></v-text-field>
 
-        <v-btn @click="submit">Update profile</v-btn>
+        <v-btn @click="submit" color="orange">Update profile</v-btn>
         <v-btn @click="clear">clear</v-btn>
       </form>
     </v-layout>
