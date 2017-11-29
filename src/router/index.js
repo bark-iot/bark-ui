@@ -6,6 +6,7 @@ import SignUp from '@/components/SignUp'
 import Profile from '@/components/Profile'
 import Houses from '@/components/Houses'
 import House from '@/components/House'
+import HouseDashboard from '@/components/HouseDashboard'
 import Devices from '@/components/Devices'
 
 Vue.use(Router)
@@ -40,6 +41,10 @@ export default new Router({
     {
       path: '/houses/:id', component: House,
       children: [
+        {
+          path: 'dashboard',
+          component: HouseDashboard
+        },
         {
           path: 'devices',
           component: Devices

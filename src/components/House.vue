@@ -1,32 +1,22 @@
 <template>
   <v-container>
-    <v-tabs v-model="active" centered fixed>
+    <v-tabs centered fixed>
       <v-toolbar extended color="orange" dark>
         <v-spacer></v-spacer>
         <v-toolbar-title slot="extension" class="display-2">{{ house.title }}</v-toolbar-title>
         <v-subheader v-text="house.address"></v-subheader>
       </v-toolbar>
       <v-tabs-bar class="orange" dark>
-        <v-tabs-item
-          v-for="tab in tabs"
-          :key="tab"
-          :href="'#' + tab"
-          ripple
-        >
-          {{ tab. title }}
+        <v-tabs-item :to="'/houses/' + house.id + '/dashboard'" router>
+          Dashboard
+        </v-tabs-item>
+        <v-tabs-item :to="'/houses/' + house.id + '/devices'" router>
+          Devices
         </v-tabs-item>
         <v-tabs-slider color="white"></v-tabs-slider>
       </v-tabs-bar>
       <v-tabs-items>
-        <v-tabs-content
-          v-for="tab in tabs"
-          :key="tab"
-          :id="tab"
-        >
-          <v-card flat>
-            <v-card-text></v-card-text>
-          </v-card>
-        </v-tabs-content>
+        <router-view></router-view>
       </v-tabs-items>
     </v-tabs>
   </v-container>
@@ -36,12 +26,9 @@
   export default {
     data() {
       return {
-        house: null,
-        active: null,
-        tabs: [
-          {title: 'General info'},
-          {title: 'Devices'}
-        ]
+        house: {
+          title: ''
+        }
       }
     },
     localStorage: {
@@ -51,6 +38,10 @@
       this.getHouse()
     },
     methods: {
+      goToTab(key, path) {
+        this.active = key
+        //this.$router.push(path)
+      },
       getHouse() {
         this.$http.get('/houses/' + this.$route.params.id, {headers: {'Authorization': 'Bearer ' + this.$localStorage.get('userToken')}}).then(response => {
           this.house = response.body
