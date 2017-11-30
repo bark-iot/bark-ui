@@ -3,6 +3,30 @@
     <v-btn flat icon color="white" @click.native.stop="showCreateDialog">
       <v-icon>add</v-icon>
     </v-btn>
+    <v-data-table
+      v-bind:headers="headers"
+      :items="devices"
+      class="elevation-1"
+      hide-actions
+      dark
+    >
+      <template slot="items" slot-scope="props">
+        <td>{{ props.item.title }}</td>
+        <td class="text-xs-right">{{ props.item.com_type }}</td>
+        <td class="text-xs-right">{{ props.item.online }}</td>
+        <td class="text-xs-right">{{ props.item.approved_at }}</td>
+        <td class="text-xs-right">{{ props.item.token }}</td>
+        <td class="text-xs-right">{{ props.item.created_at | formatDate}}</td>
+        <td class="text-xs-right">
+          <v-btn icon class="primary--text" @click="showEditDialog(props.item)">
+            <v-icon>edit</v-icon>
+          </v-btn>
+          <v-btn icon class="red--text" @click="deleteDevice(props.item)">
+            <v-icon>delete</v-icon>
+          </v-btn>
+        </td>
+      </template>
+    </v-data-table>
     <v-dialog v-model="addDialog" persistent max-width="500px">
       <v-card>
         <v-card-title class="headline">{{ dialog_header }}</v-card-title>
@@ -43,7 +67,20 @@
         title: '',
         dialog_header: '',
         edit_id: null,
-        addDialog: false
+        addDialog: false,
+        headers: [
+          {
+            text: 'Title',
+            align: 'left',
+            value: 'title'
+          },
+          {text: 'Type', value: 'com_type'},
+          {text: 'Online', value: 'online'},
+          {text: 'Approved', value: 'approved_at'},
+          {text: 'Token', value: 'token'},
+          {text: 'Created', value: 'created_at'},
+          {text: 'Actions', sortable: false}
+        ],
       }
     },
     localStorage: {
@@ -61,7 +98,7 @@
       },
       showEditDialog(device) {
         this.dialog_header = 'Edit Device'
-        this.edit_id = house.id
+        this.edit_id = device.id
         this.title = device.title
         this.addDialog = true
       },
@@ -71,7 +108,40 @@
         }, response => {
           this.$emit('show-error', ['Server error'])
         })
-      }
+      },
+      saveDevice() {
+        this.$v.$touch()
+        if (!this.$v.$invalid) {
+          var formData = new FormData();
+          formData.append('title', this.title);
+
+          if (this.edit_id === null) {
+            this.$http.post('/houses/' + this.$route.params.id + '/devices', formData, {headers: {'Authorization': 'Bearer ' + this.$localStorage.get('userToken')}}).then(response => {
+              this.getDevices()
+              this.addDialog = false
+            }, response => {
+              this.$emit('show-error', response.body)
+            });
+          } else {
+            this.$http.put('/houses/' + this.$route.params.id + '/devices/' + this.edit_id, formData, {headers: {'Authorization': 'Bearer ' + this.$localStorage.get('userToken')}}).then(response => {
+              this.getDevices()
+              this.addDialog = false
+            }, response => {
+              this.$emit('show-error', response.body)
+            });
+          }
+        }
+      },
+      deleteDevice(device) {
+        let answer = confirm('Remove Device ' + device.title + '?')
+        if (answer) {
+          this.$http.delete('/houses/' + this.$route.params.id + '/devices/' + device.id, {headers: {'Authorization': 'Bearer ' + this.$localStorage.get('userToken')}}).then(response => {
+            this.getDevices()
+          }, response => {
+            this.$emit('show-error', ['Server error'])
+          })
+        }
+      },
     },
     computed: {
       titleErrors() {
