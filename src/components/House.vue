@@ -7,12 +7,11 @@
         <v-subheader v-text="house.address"></v-subheader>
       </v-toolbar>
       <v-tabs-bar class="orange" dark>
-        <v-tabs-item :to="'/houses/' + house.id + '/dashboard'" router>
-          Dashboard
-        </v-tabs-item>
-        <v-tabs-item :to="'/houses/' + house.id + '/devices'" router>
-          Devices
-        </v-tabs-item>
+        <v-tabs-item
+          v-for="tab in tabs"
+          :to="'/houses/' + house.id + tab.href"
+          router
+        >{{ tab.title }}</v-tabs-item>
         <v-tabs-slider color="white"></v-tabs-slider>
       </v-tabs-bar>
       <v-tabs-items>
@@ -28,7 +27,13 @@
       return {
         house: {
           title: ''
-        }
+        },
+        tabs: [
+          {title: 'Dashboard', href: '/dashboard'},
+          {title: 'Devices', href: '/devices'},
+          {title: 'Barks', href: '/barks'},
+          {title: 'System Barks', href: '/system-barks'}
+        ]
       }
     },
     localStorage: {

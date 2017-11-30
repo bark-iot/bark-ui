@@ -1,6 +1,25 @@
 <template>
   <v-container>
-    <h1>Dashboard</h1>
+    <p class="headline">
+      <strong class="orange--text">Title:</strong>
+      <span>{{ house.title }}</span>
+    </p>
+    <p class="headline">
+      <strong class="orange--text">Address:</strong>
+      <span>{{ house.address }}</span>
+    </p>
+    <p class="headline">
+      <strong class="orange--text">Key:</strong>
+      <span>{{ house.key }}</span>
+    </p>
+    <p class="headline">
+      <strong class="orange--text">Secret:</strong>
+      <span><v-chip color="red" text-color="white">unavailable</v-chip></span>
+    </p>
+    <p class="headline">
+      <strong class="orange--text">Created at:</strong>
+      <span>{{ house.created_at }}</span>
+    </p>
   </v-container>
 </template>
 

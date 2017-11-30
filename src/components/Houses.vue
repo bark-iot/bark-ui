@@ -20,11 +20,15 @@
           </v-card-title>
 
           <v-card-actions>
-            <v-btn flat color="orange" @click.native="showSettings(house)">
+            <v-btn flat icon color="orange" @click.native="showSettings(house)">
               <v-icon>settings</v-icon>
             </v-btn>
-            <v-btn flat color="orange" @click="showEditDialog(house)">Edit</v-btn>
-            <v-btn flat color="red" @click="deleteHouse(house)">Remove</v-btn>
+            <v-btn flat icon color="orange" @click="showEditDialog(house)">
+              <v-icon>mode_edit</v-icon>
+            </v-btn>
+            <v-btn flat icon color="red" @click="deleteHouse(house)">
+              <v-icon>delete</v-icon>
+            </v-btn>
           </v-card-actions>
           <v-slide-y-transition>
             <v-card-text v-show="house.showSettings" class="grey darken-1">
