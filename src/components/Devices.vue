@@ -12,7 +12,7 @@
     >
       <template slot="items" slot-scope="props">
         <td>{{ props.item.title }}</td>
-        <td class="text-xs-right">{{ props.item.com_type }}</td>
+        <td class="text-xs-right">{{ com_types[props.item.com_type].text }}</td>
         <td class="text-xs-right">{{ props.item.online }}</td>
         <td class="text-xs-right">{{ props.item.approved_at }}</td>
         <td class="text-xs-right">{{ props.item.token }}</td>
@@ -41,6 +41,17 @@
             @blur="$v.title.$touch()"
             required
           ></v-text-field>
+          <v-select
+            v-bind:items="com_types"
+            item-text="text"
+            item-value="value"
+            v-model="com_type"
+            label="Communication type"
+            :error-messages="comTypeErrors"
+            @input="$v.title.$touch()"
+            @blur="$v.title.$touch()"
+            required
+          ></v-select>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -59,12 +70,14 @@
   export default {
     mixins: [validationMixin],
     validations: {
-      title: {required}
+      title: {required},
+      com_type: {required}
     },
     data() {
       return {
         devices: [],
         title: '',
+        com_type: 0,
         dialog_header: '',
         edit_id: null,
         addDialog: false,
@@ -81,6 +94,10 @@
           {text: 'Created', value: 'created_at'},
           {text: 'Actions', sortable: false}
         ],
+        com_types: [
+          {text: 'REST Api', value: 0},
+          {text: 'TCP', value: 1}
+        ]
       }
     },
     localStorage: {
@@ -114,6 +131,7 @@
         if (!this.$v.$invalid) {
           var formData = new FormData();
           formData.append('title', this.title);
+          formData.append('com_type', this.com_type);
 
           if (this.edit_id === null) {
             this.$http.post('/houses/' + this.$route.params.id + '/devices', formData, {headers: {'Authorization': 'Bearer ' + this.$localStorage.get('userToken')}}).then(response => {
@@ -148,6 +166,12 @@
         const errors = []
         if (!this.$v.title.$dirty) return errors
         !this.$v.title.required && errors.push('Title is required.')
+        return errors
+      },
+      comTypeErrors() {
+        const errors = []
+        if (!this.$v.com_type.$dirty) return errors
+        !this.$v.com_type.required && errors.push('Communication type is required.')
         return errors
       }
     }
