@@ -14,7 +14,9 @@
         <td>{{ props.item.title }}</td>
         <td class="text-xs-right">{{ com_types[props.item.com_type].text }}</td>
         <td class="text-xs-right">{{ props.item.online }}</td>
-        <td class="text-xs-right">{{ props.item.approved_at }}</td>
+        <td class="text-xs-right">
+          <v-switch color="orange" v-model="props.item.approved_at" @change="approve(props.item)"></v-switch>
+        </td>
         <td class="text-xs-right">{{ props.item.token }}</td>
         <td class="text-xs-right">{{ props.item.created_at | formatDate}}</td>
         <td class="text-xs-right">
@@ -149,6 +151,16 @@
             });
           }
         }
+      },
+      approve(device) {
+        var formData = new FormData();
+        formData.append('approved', device.approved_at);
+
+        this.$http.post('/houses/' + this.$route.params.id + '/devices/' + device.id + '/approved', formData, {headers: {'Authorization': 'Bearer ' + this.$localStorage.get('userToken')}}).then(response => {
+          this.getDevices()
+        }, response => {
+          this.$emit('show-error', response.body)
+        });
       },
       deleteDevice(device) {
         let answer = confirm('Remove Device ' + device.title + '?')
