@@ -8,8 +8,9 @@ import Houses from '@/components/Houses'
 import House from '@/components/House'
 import HouseDashboard from '@/components/HouseDashboard'
 import Devices from '@/components/Devices'
+import Device from '@/components/Device'
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
   routes: [
@@ -50,6 +51,10 @@ export default new Router({
           component: Devices
         }
       ]
+    },
+    {
+      path: '/houses/:house_id/devices/:device_id',
+      component: Device
     }
   ]
 })
