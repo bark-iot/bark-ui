@@ -13,7 +13,9 @@
       <template slot="items" slot-scope="props">
         <td>{{ props.item.title }}</td>
         <td class="text-xs-right">{{ com_types[props.item.com_type].text }}</td>
-        <td class="text-xs-right">{{ props.item.online }}</td>
+        <td class="text-xs-right">
+          <v-switch color="orange" v-model="props.item.online" @change="approve(props.item)"></v-switch>
+        </td>
         <td class="text-xs-right">
           <v-switch color="orange" v-model="props.item.approved_at" @change="approve(props.item)"></v-switch>
         </td>
