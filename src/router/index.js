@@ -9,6 +9,7 @@ import House from '@/components/House'
 import HouseDashboard from '@/components/HouseDashboard'
 import Devices from '@/components/Devices'
 import Device from '@/components/Device'
+import Triggers from '@/components/Triggers'
 
 Vue.use(Router);
 
@@ -54,7 +55,13 @@ export default new Router({
     },
     {
       path: '/houses/:house_id/devices/:device_id',
-      component: Device
+      component: Device,
+      children: [
+        {
+          path: 'triggers',
+          component: Triggers
+        }
+      ]
     }
   ]
 })

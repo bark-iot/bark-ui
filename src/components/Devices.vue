@@ -22,7 +22,7 @@
         <td class="text-xs-right">{{ props.item.token }}</td>
         <td class="text-xs-right">{{ props.item.created_at | formatDate}}</td>
         <td class="text-xs-right">
-          <v-btn icon class="orange--text" @click="goTo('/houses/' + $route.params.id + '/devices/' + props.item.id)">
+          <v-btn icon class="orange--text" @click="goTo('/houses/' + $route.params.id + '/devices/' + props.item.id + '/triggers')">
             <v-icon>settings_input_component</v-icon>
           </v-btn>
           <v-btn icon class="primary--text" @click="showEditDialog(props.item)">
