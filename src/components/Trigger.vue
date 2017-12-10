@@ -18,7 +18,11 @@
           @blur="$v.key.$touch()"
           required
         ></v-text-field>
-
+        <h3 class="orange--text">Data Fields</h3>
+        <data-fields
+          v-model="output"
+          @add="addDataField"
+          @remove="removeDataField"></data-fields>
         <v-btn @click="save" color="orange">Save Trigger</v-btn>
       </form>
     </v-layout>
@@ -28,6 +32,7 @@
 <script>
   import {validationMixin} from 'vuelidate'
   import {required} from 'vuelidate/lib/validators'
+  import DataFields from '@/components/DataFields'
 
   export default {
     mixins: [validationMixin],
@@ -35,11 +40,15 @@
       title: {required},
       key: {required}
     },
+    components: {
+      'data-fields': DataFields
+    },
     data() {
       return {
         trigger: null,
         title: null,
-        key: null
+        key: null,
+        output: []
       }
     },
     mounted() {
@@ -56,6 +65,9 @@
           this.trigger = response.body
           this.title = response.body.title
           this.key = response.body.key
+          if (response.body.output !== null) {
+            this.output = response.body.output
+          }
         }, response => {
           bus.$emit('show-error', ['Server error'])
         })
@@ -66,6 +78,7 @@
           var formData = new FormData();
           formData.append('title', this.title);
           formData.append('key', this.key);
+          formData.append('output', JSON.stringify(this.output));
 
           var basePath = '/houses/' + this.$route.params.house_id + '/devices/' + this.$route.params.device_id + '/triggers';
           if (this.trigger === null) {
@@ -84,6 +97,12 @@
             });
           }
         }
+      },
+      addDataField(df) {
+        this.output.push(df)
+      },
+      removeDataField(index) {
+        this.output.splice(index, 1)
       }
     },
     computed: {
