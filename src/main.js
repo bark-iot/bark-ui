@@ -23,6 +23,8 @@ Vue.filter('formatDate', value => {
   }
 })
 
+window.bus = new Vue()
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

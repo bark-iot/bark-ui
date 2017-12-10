@@ -143,7 +143,7 @@
             this.houses[i].showSettings = false
           }
         }, response => {
-          this.$emit('show-error', ['Server error'])
+          bus.$emit('show-error', ['Server error'])
         })
       },
       saveHouse() {
@@ -161,14 +161,14 @@
               this.secret = response.body.secret
               this.secretDialog = true
             }, response => {
-              this.$emit('show-error', response.body)
+              bus.$emit('show-error', response.body)
             });
           } else {
             this.$http.put('/houses/' + this.edit_id, formData, {headers: {'Authorization': 'Bearer ' + this.$localStorage.get('userToken')}}).then(response => {
               this.getHouses()
               this.addDialog = false
             }, response => {
-              this.$emit('show-error', response.body)
+              bus.$emit('show-error', response.body)
             });
           }
         }
@@ -179,7 +179,7 @@
           this.$http.delete('/houses/' + house.id, {headers: {'Authorization': 'Bearer ' + this.$localStorage.get('userToken')}}).then(response => {
             this.getHouses()
           }, response => {
-            this.$emit('show-error', ['Server error'])
+            bus.$emit('show-error', ['Server error'])
           })
         }
       },

@@ -133,7 +133,7 @@
         this.$http.get('/houses/' + this.$route.params.id + '/devices', {headers: {'Authorization': 'Bearer ' + this.$localStorage.get('userToken')}}).then(response => {
           this.devices = response.body
         }, response => {
-          this.$emit('show-error', ['Server error'])
+          bus.$emit('show-error', ['Server error'])
         })
       },
       saveDevice() {
@@ -148,14 +148,14 @@
               this.getDevices()
               this.addDialog = false
             }, response => {
-              this.$emit('show-error', response.body)
+              bus.$emit('show-error', response.body)
             });
           } else {
             this.$http.put('/houses/' + this.$route.params.id + '/devices/' + this.edit_id, formData, {headers: {'Authorization': 'Bearer ' + this.$localStorage.get('userToken')}}).then(response => {
               this.getDevices()
               this.addDialog = false
             }, response => {
-              this.$emit('show-error', response.body)
+              bus.$emit('show-error', response.body)
             });
           }
         }
@@ -167,7 +167,7 @@
         this.$http.post('/houses/' + this.$route.params.id + '/devices/' + device.id + '/approved', formData, {headers: {'Authorization': 'Bearer ' + this.$localStorage.get('userToken')}}).then(response => {
           this.getDevices()
         }, response => {
-          this.$emit('show-error', response.body)
+          bus.$emit('show-error', response.body)
         });
       },
       deleteDevice(device) {
@@ -176,7 +176,7 @@
           this.$http.delete('/houses/' + this.$route.params.id + '/devices/' + device.id, {headers: {'Authorization': 'Bearer ' + this.$localStorage.get('userToken')}}).then(response => {
             this.getDevices()
           }, response => {
-            this.$emit('show-error', ['Server error'])
+            bus.$emit('show-error', ['Server error'])
           })
         }
       },

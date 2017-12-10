@@ -54,7 +54,7 @@
         this.$http.get('/houses/' + this.$route.params.house_id + '/devices/' + this.$route.params.device_id, {headers: {'Authorization': 'Bearer ' + this.$localStorage.get('userToken')}}).then(response => {
           this.device = response.body
         }, response => {
-          this.$emit('show-error', ['Server error'])
+          bus.$emit('show-error', ['Server error'])
         })
       }
     }

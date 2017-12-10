@@ -43,7 +43,7 @@
         this.$http.get('/houses/' + this.$route.params.id, {headers: {'Authorization': 'Bearer ' + this.$localStorage.get('userToken')}}).then(response => {
           this.house = response.body
         }, response => {
-          this.$emit('show-error', ['Server error'])
+          bus.$emit('show-error', ['Server error'])
         })
       }
     }

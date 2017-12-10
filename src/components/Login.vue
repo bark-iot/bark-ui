@@ -28,23 +28,23 @@
 </template>
 
 <script>
-  import { validationMixin } from 'vuelidate'
-  import { required, minLength, email } from 'vuelidate/lib/validators'
+  import {validationMixin} from 'vuelidate'
+  import {required, minLength, email} from 'vuelidate/lib/validators'
 
   export default {
     mixins: [validationMixin],
     validations: {
-      password: { required, minLength: minLength(8) },
-      email: { required, email }
+      password: {required, minLength: minLength(8)},
+      email: {required, email}
     },
-    data () {
+    data() {
       return {
         password: '',
         email: ''
       }
     },
     methods: {
-      submit () {
+      submit() {
         this.$v.$touch()
         if (!this.$v.$invalid) {
           var formData = new FormData();
@@ -52,27 +52,27 @@
           formData.append('password', this.password);
 
           this.$http.post('/users/by_email_password', formData).then(response => {
-            this.$emit('login', response.body.token)
+            bus.$emit('login', response.body.token)
           }, response => {
-            this.$emit('show-error', ['Invalid Email or Password'])
+            bus.$emit('show-error', ['Invalid Email or Password'])
           });
         }
       },
-      clear () {
+      clear() {
         this.$v.$reset()
         this.password = ''
         this.email = ''
       }
     },
     computed: {
-      passwordErrors () {
+      passwordErrors() {
         const errors = []
         if (!this.$v.password.$dirty) return errors
         !this.$v.password.minLength && errors.push('Password must be at least 8 characters long')
         !this.$v.password.required && errors.push('Password is required.')
         return errors
       },
-      emailErrors () {
+      emailErrors() {
         const errors = []
         if (!this.$v.email.$dirty) return errors
         !this.$v.email.email && errors.push('Must be valid e-mail')

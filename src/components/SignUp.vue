@@ -69,9 +69,9 @@
 
           this.$http.post('/users', formData).then(response => {
             this.$router.push('/login')
-            this.$emit('show-success-message', 'Thank you for joining! Now you can login!')
+            bus.$emit('show-success-message', 'Thank you for joining! Now you can login!')
           }, response => {
-            this.$emit('show-error', response.body)
+            bus.$emit('show-error', response.body)
           });
         }
       },

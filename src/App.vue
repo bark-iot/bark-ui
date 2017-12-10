@@ -28,12 +28,9 @@
       </v-toolbar-items>
     </v-toolbar>
     <v-content>
-
-          <router-view
-            @show-error="showError"
-            @show-success-message="showSuccessMessage"
-            @login="handleLogin"
-          ></router-view>
+      <v-container>
+        <v-layout>
+          <router-view></router-view>
         </v-layout>
       </v-container>
     </v-content>
@@ -60,17 +57,17 @@
 
 <script>
   export default {
-    data () {
+    data() {
       return {
         drawer: false,
         anonymMenuItems: [
-          { title: 'Home', icon: 'info_outline', path: '/' },
-          { title: 'Login', icon: 'arrow_forward', path: '/login' },
-          { title: 'Sign up', icon: 'add', path: '/sign-up' }
+          {title: 'Home', icon: 'info_outline', path: '/'},
+          {title: 'Login', icon: 'arrow_forward', path: '/login'},
+          {title: 'Sign up', icon: 'add', path: '/sign-up'}
         ],
         userMenuItems: [
-          { title: 'Profile', icon: 'info_outline', path: '/profile' },
-          { title: 'Houses', icon: 'info_outline', path: '/houses' }
+          {title: 'Profile', icon: 'info_outline', path: '/profile'},
+          {title: 'Houses', icon: 'info_outline', path: '/houses'}
         ],
         loggedIn: false,
         errors: [],
@@ -83,36 +80,42 @@
     localStorage: {
       userToken: ''
     },
-    mounted () {
+    mounted() {
       var userToken = this.$localStorage.get('userToken')
       if (userToken != 'undefined' && userToken != '') {
-        this.handleLogin(userToken)
+        this.handleLogin(userToken, false)
       }
+
+      bus.$on('show-error', errors => this.showError(errors))
+      bus.$on('show-success-message', msg => this.showSuccessMessage(msg))
+      bus.$on('login', token => this.handleLogin(token))
     },
     methods: {
-      goTo (path) {
+      goTo(path) {
         this.$router.push(path)
       },
-      showError (errors) {
+      showError(errors) {
         this.errors = errors
         this.errorSnackbar = true
       },
-      showSuccessMessage (msg) {
+      showSuccessMessage(msg) {
         this.successMessage = msg
         this.successSnackbar = true
       },
-      handleLogin (token) {
+      handleLogin(token, goProfile = true) {
         this.$http.get('/users/by_token', {headers: {'Authorization': 'Bearer ' + token}}).then(response => {
           this.loggedIn = true
           this.loggedInUser = response.body
           this.$localStorage.set('userToken', token)
           this.showSuccessMessage('You are logged in!')
-          this.$router.push('/profile')
+          if (goProfile) {
+            this.$router.push('/profile')
+          }
         }, response => {
           this.showError(['Please re-login!'])
         });
       },
-      handleLogout () {
+      handleLogout() {
         this.loggedIn = false
         this.loggedInUser = null
         this.$localStorage.remove('userToken')

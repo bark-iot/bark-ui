@@ -29,15 +29,15 @@
 </template>
 
 <script>
-  import { validationMixin } from 'vuelidate'
-  import { required, minLength, email } from 'vuelidate/lib/validators'
+  import {validationMixin} from 'vuelidate'
+  import {required, minLength, email} from 'vuelidate/lib/validators'
 
   export default {
     mixins: [validationMixin],
     validations: {
-      password: { minLength: minLength(8) }
+      password: {minLength: minLength(8)}
     },
-    data () {
+    data() {
       return {
         username: '',
         password: '',
@@ -47,7 +47,7 @@
     localStorage: {
       userToken: ''
     },
-    mounted () {
+    mounted() {
       var userToken = this.$localStorage.get('userToken')
       if (userToken != 'undefined' && userToken != '') {
         this.$http.get('/users/by_token', {headers: {'Authorization': 'Bearer ' + userToken}}).then(response => {
@@ -59,7 +59,7 @@
       }
     },
     methods: {
-      submit () {
+      submit() {
         this.$v.$touch()
         if (!this.$v.$invalid) {
           var formData = new FormData();
@@ -67,20 +67,20 @@
           formData.append('password', this.password);
 
           this.$http.post('/users/update', formData, {headers: {'Authorization': 'Bearer ' + this.$localStorage.get('userToken')}}).then(response => {
-            this.$emit('show-success-message', 'Profile updated!')
+            bus.$emit('show-success-message', 'Profile updated!')
           }, response => {
-            this.$emit('show-error', response.body)
+            bus.$emit('show-error', response.body)
           });
         }
       },
-      clear () {
+      clear() {
         this.$v.$reset()
         this.username = ''
         this.password = ''
       }
     },
     computed: {
-      passwordErrors () {
+      passwordErrors() {
         const errors = []
         if (!this.$v.password.$dirty) return errors
         !this.$v.password.minLength && errors.push('Password must be at least 8 characters long')

@@ -10,6 +10,7 @@ import HouseDashboard from '@/components/HouseDashboard'
 import Devices from '@/components/Devices'
 import Device from '@/components/Device'
 import Triggers from '@/components/Triggers'
+import Trigger from '@/components/Trigger'
 
 Vue.use(Router);
 
@@ -60,6 +61,14 @@ export default new Router({
         {
           path: 'triggers',
           component: Triggers
+        },
+        {
+          path: 'triggers/add',
+          component: Trigger
+        },
+        {
+          path: 'triggers/:id',
+          component: Trigger
         }
       ]
     }
