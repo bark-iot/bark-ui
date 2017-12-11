@@ -11,6 +11,8 @@ import Devices from '@/components/Devices'
 import Device from '@/components/Device'
 import Triggers from '@/components/Triggers'
 import Trigger from '@/components/Trigger'
+import Actions from '@/components/Actions'
+import Action from '@/components/Action'
 
 Vue.use(Router);
 
@@ -69,6 +71,18 @@ export default new Router({
         {
           path: 'triggers/:id',
           component: Trigger
+        },
+        {
+          path: 'actions',
+          component: Actions
+        },
+        {
+          path: 'actions/add',
+          component: Action
+        },
+        {
+          path: 'actions/:id',
+          component: Action
         }
       ]
     }
