@@ -31,8 +31,7 @@
         tabs: [
           {title: 'Dashboard', href: '/dashboard'},
           {title: 'Devices', href: '/devices'},
-          {title: 'Barks', href: '/barks'},
-          {title: 'System Barks', href: '/system-barks'}
+          {title: 'Barks', href: '/barks'}
         ]
       }
     },

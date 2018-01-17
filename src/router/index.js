@@ -13,6 +13,8 @@ import Triggers from '@/components/Triggers'
 import Trigger from '@/components/Trigger'
 import Actions from '@/components/Actions'
 import Action from '@/components/Action'
+import Barks from '@/components/Barks'
+import Bark from '@/components/Bark'
 
 Vue.use(Router);
 
@@ -53,6 +55,18 @@ export default new Router({
         {
           path: 'devices',
           component: Devices
+        },
+        {
+          path: 'barks',
+          component: Barks
+        },
+        {
+          path: 'barks/add',
+          component: Bark
+        },
+        {
+          path: 'barks/:bark_id',
+          component: Bark
         }
       ]
     },
