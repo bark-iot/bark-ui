@@ -105,7 +105,8 @@
         title: null,
         settings: [],
         mappings: [],
-        outputs: []
+        outputs: [],
+        initializing: true
       }
     },
     mounted() {
@@ -128,8 +129,18 @@
           if (response.body.mappings !== null) {
             this.mappings = JSON.parse(response.body.mappings)
           }
-          this.trigger_id = response.body.trigger_id
-          this.action_id = response.body.action_id
+          this.$http.get('/houses/' + this.$route.params.id + '/triggers/' + response.body.trigger_id + '/validate', {headers: {'Authorization': 'Bearer ' + this.$localStorage.get('userToken')}}).then(response => {
+            this.trigger_device_id = response.body.device_id ? response.body.device_id : 0
+            this.getTriggers(this.trigger_device_id, response.body.id)
+          }, response => {
+            bus.$emit('show-error', ['Server error'])
+          })
+          this.$http.get('/houses/' + this.$route.params.id + '/actions/' + response.body.action_id + '/validate', {headers: {'Authorization': 'Bearer ' + this.$localStorage.get('userToken')}}).then(response => {
+            this.action_device_id = response.body.device_id ? response.body.device_id : 0
+            this.getActions(this.action_device_id, response.body.id)
+          }, response => {
+            bus.$emit('show-error', ['Server error'])
+          })
         }, response => {
           bus.$emit('show-error', ['Server error'])
         })
@@ -142,24 +153,30 @@
           bus.$emit('show-error', ['Server error'])
         })
       },
-      getTriggers(trigger_device_id) {
+      getTriggers(trigger_device_id, trigger_id = null) {
         let url = '/houses/' + this.$route.params.id + '/devices/' + trigger_device_id + '/triggers'
         if (trigger_device_id === 0) { //System
           url = '/triggers/system'
         }
         this.$http.get(url, {headers: {'Authorization': 'Bearer ' + this.$localStorage.get('userToken')}}).then(response => {
           this.triggers = response.body
+          if (trigger_id) {
+            this.trigger_id = trigger_id
+          }
         }, response => {
           bus.$emit('show-error', ['Server error'])
         })
       },
-      getActions(action_device_id) {
+      getActions(action_device_id, action_id = null) {
         let url = '/houses/' + this.$route.params.id + '/devices/' + action_device_id + '/actions'
         if (action_device_id === 0) { //System
           url = '/actions/system'
         }
         this.$http.get(url, {headers: {'Authorization': 'Bearer ' + this.$localStorage.get('userToken')}}).then(response => {
           this.actions = response.body
+          if (action_id) {
+            this.action_id = action_id
+          }
         }, response => {
           bus.$emit('show-error', ['Server error'])
         })
@@ -223,6 +240,10 @@
         }
       },
       action_id: function (val) {
+        if (this.$route.params.bark_id && this.initializing) {
+          this.initializing = false
+          return
+        }
         for (let i = 0; i < this.actions.length; i++) {
           if (this.actions[i].id === val) {
             this.mappings = []
